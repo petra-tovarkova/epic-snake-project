@@ -61,9 +61,17 @@ def run_game():
 
 def draw_game_state(snake, apple, ???):
     #Draw the contents on the screen.
-
+    
     # Draw Grid
     # Draw Snake
+    # Draw objects
+    # Draw Score
+    # Others
+
+class Objects:
+    #crete class for objects on the map that can be picked up
+
+# write functions for that objects
     # Draw Apple (score)
     # Draw objects that uncover map
     # Draw objects that take a life
@@ -71,10 +79,8 @@ def draw_game_state(snake, apple, ???):
     # Draw objects that slow snake down
     # Draw objects that make snake deathless
     # Draw treasure (prize) 
-    # Draw Score
-    # Others
-
 """
+#domyslet mapu, bude se pohybovat se snakem a nebo se pohybuje podle toho jaky delas progres (oddaluje se)
     
 
 if __name__ == '__main__':
