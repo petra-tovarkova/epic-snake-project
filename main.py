@@ -78,4 +78,5 @@ def draw_game_state(snake, apple, ???):
     
 
 if __name__ == '__main__':
-    main 
+    main() 
+x="změna"
