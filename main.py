@@ -84,4 +84,5 @@ class Objects:
     
 
 if __name__ == '__main__':
-    main()
+    main() 
+x="změna"
