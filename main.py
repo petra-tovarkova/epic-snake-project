@@ -59,7 +59,7 @@ def get_random_location():
 def run_game():
     #Main game logic. Return on game over.
 
-def draw_game_state(snake, apple, ???):
+def draw_game_state(snake, apple):
     #Draw the contents on the screen.
     
     # Draw Grid
@@ -72,7 +72,7 @@ class Objects:
     #crete class for objects on the map that can be picked up
 
 # write functions for that objects
-    # Draw Apple (score)
+    # Draw Apple (letter, numbers, blocks,... items to complete the level) (score)
     # Draw objects that uncover map
     # Draw objects that take a life
     # Draw objects that give a life
