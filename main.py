@@ -72,7 +72,7 @@ class Objects:
     #crete class for objects on the map that can be picked up
 
 # write functions for that objects
-    # Draw Apple (letter, numbers, blocks,... items to complete the level) (score)
+    # Draw Apple (letter, numbers, blocks, obstacles... items to complete the level) (score)
     # Draw objects that uncover map
     # Draw objects that take a life
     # Draw objects that give a life
