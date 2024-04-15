@@ -79,6 +79,9 @@ class Board:
                     self.snake.ate = True
                     self.letter_position.pop(i)
                     break
+                else:
+                    show_game_over_screen()
+                    terminate()
 
     def add_letter(self, letter):
         while True:
