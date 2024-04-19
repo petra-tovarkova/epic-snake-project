@@ -81,7 +81,10 @@ class Board:
                     break
                 else:
                     show_game_over_screen()
-                    terminate()
+                    main()
+
+    def new_method(self):
+        show_game_over_screen
 
     def add_letter(self, letter):
         while True:
