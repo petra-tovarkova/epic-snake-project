@@ -11,6 +11,11 @@ DARKGREEN = (0, 155, 0)
 BROWN = (150, 75, 0)
 FPS = 10
 
+TIME_LIMIT = 120
+
+TEXT_COLOR = WHITE
+#ELEMENT_SIZE = 10
+
 WINDOWWIDTH = 640
 WINDOWHEIGHT = 480
 CELLSIZE = 20
@@ -31,9 +36,11 @@ class Board:
         self.height = NUM_CELLS_Y
         self.snake = Snake(self.width // 2, self.height // 2)
         self.chest = Chest()
-        self.food_position = []
+        self.start_time = time.time()
+        self.elapsed_time = 0
+        self.coin_position = []
         for i in range(6):
-            self.add_food()
+            self.add_coin()
     
     def draw_board(self):
         # Draw grid
@@ -55,44 +62,55 @@ class Board:
         for body_part in self.snake.body[3:]:  # Rest of the body parts
             x = body_part[0] * CELLSIZE
             y = body_part[1] * CELLSIZE
-            outer_part_rect = pygame.Rect(x, y, CELLSIZE, CELLSIZE)
-            inner_part_rect = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
-            pygame.draw.rect(DISPLAYSURF, DARKYELLOW, outer_part_rect)
-            pygame.draw.rect(DISPLAYSURF, YELLOW, inner_part_rect)
+            outer_part_ellipse = pygame.Rect(x, y, CELLSIZE, CELLSIZE)
+            inner_part_ellipse = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
+            pygame.draw.ellipse(DISPLAYSURF, DARKYELLOW, outer_part_ellipse)
+            pygame.draw.ellipse(DISPLAYSURF, YELLOW, inner_part_ellipse)
 
-        # Draw apple
-        for i in range(len(self.food_position)):
-            x = self.food_position[i][0]
-            y = self.food_position[i][1]
-            food_rect = pygame.Rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE)
-            pygame.draw.rect(DISPLAYSURF, YELLOW, food_rect)
+        # Draw coin
+        for i in range(len(self.coin_position)):
+            x = self.coin_position[i][0]
+            y = self.coin_position[i][1]
+            coin_rect = pygame.Rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE)
+            pygame.draw.ellipse(DISPLAYSURF, YELLOW, coin_rect)
 
-        # Draw score
-        score_surface = BASICFONT.render('Score: ' + str(len(self.snake.body) - 3), True, WHITE)
+        # Draw coins score
+        score_surface = BASICFONT.render('Coins: ' + str(len(self.snake.body) - 3), True, WHITE)
         score_rect = score_surface.get_rect()
         score_rect.topleft = (WINDOWWIDTH - 120, 10)
         DISPLAYSURF.blit(score_surface, score_rect)
-
+        
+        # Draw time left
+        time_left = TIME_LIMIT  - round(self.elapsed_time, 2)
+        #time_surface = BASICFONT.render('Time left: ' + str(time_left), True, WHITE)
+        time_surface = BASICFONT.render('Time left: {:.2f}'.format(time_left), True, WHITE)
+        time_rect = time_surface.get_rect()
+        time_rect.topleft = (10, 10)
+        DISPLAYSURF.blit(time_surface, time_rect)
+    
         #Draw chest
-        self.chest.draw()
+        text = "0"
+        if self.check_chest():
+            text = str(int(text) + len(self.snake.body) - 3) 
+        self.chest.draw(str(self.chest.coins))
 
 
-    def check_food(self):
+    def check_coin(self):
         x, y = self.snake.body[0][0], self.snake.body[0][1]
-        for el in self.food_position:
+        for el in self.coin_position:
             if el[0] == x and el[1] == y:
                 self.snake.ate = True
-                self.food_position.remove(el)
-                self.add_food()
+                self.coin_position.remove(el)
+                self.add_coin()
                 return
             
-    def add_food(self):
+    def add_coin(self):
         while True:
             x, y = get_random_position()
-            if self.check_list(self.snake.body, x, y) or self.check_list(self.food_position, x, y):
+            if self.check_list(self.snake.body, x, y) or self.check_list(self.coin_position, x, y):
                 continue
             else:
-                self.food_position.append((x, y))
+                self.coin_position.append((x, y))
                 break
             
     def check_list(self, elist, x, y):
@@ -111,10 +129,27 @@ class Board:
         return False
 
     def check_victory(self):
-        if (self.chest.position == self.snake.body[0]) and (len(self.snake.body) - 3 >= 20):
-            self.chest.opened == True
+        chest_x, chest_y = self.chest.position
+        snake_head_x, snake_head_y = self.snake.body[0]
+
+        if (chest_x <= snake_head_x < chest_x + 2) and (chest_y <= snake_head_y < chest_y + 2) and (self.chest.coins >= 20):
+            self.chest.opened = True
+            return True
+        self.elapsed_time = time.time() - self.start_time
+        if self.elapsed_time >= TIME_LIMIT:
             return True
         return False
+
+    def check_chest(self):
+        chest_x, chest_y = self.chest.position
+        snake_head_x, snake_head_y = self.snake.body[0]
+
+        if (chest_x <= snake_head_x < chest_x + 2) and (chest_y <= snake_head_y < chest_y + 2):
+            self.chest.coins += len(self.snake.body) -3
+            for i in range (len(self.snake.body) - 3):
+                self.snake.body.pop()   
+            return True
+        
         
 class Snake:
     def __init__(self, x, y):
@@ -140,15 +175,23 @@ class Snake:
         else:
             self.ate = False
 
+
 class Chest:
     def __init__(self):
-        self.position = get_random_position()
+        self.position = (8, 10)  # Fixed position for the chest
         self.opened = False
+        self.coins = 0
 
-    def draw(self):
+    def draw(self, text):
+        imp = pygame.image.load(".\\chest_40.png").convert()
         x, y = self.position
-        chest_rect = pygame.Rect(x * CELLSIZE, y * CELLSIZE, CELLSIZE, CELLSIZE)
-        pygame.draw.rect(DISPLAYSURF, BROWN, chest_rect)
+        DISPLAYSURF.blit(imp, (x * CELLSIZE, y * CELLSIZE))
+        SMALL_FONT = pygame.font.Font('freesansbold.ttf', 20)
+        text_surf = SMALL_FONT.render(text, True, TEXT_COLOR)
+        text_rect = text_surf.get_rect()
+        text_rect.center = ((x + 1) * CELLSIZE, (y + 1) * CELLSIZE)
+        DISPLAYSURF.blit(text_surf, text_rect)
+
 
 def get_random_position():
     return random.randint(1, NUM_CELLS_X - 2), random.randint(1, NUM_CELLS_Y - 2)
@@ -181,10 +224,14 @@ def main():
 
                 
         board.snake.move()
-        board.check_food()
+        board.check_coin()
+        board.check_chest()
         if board.check_victory():
-            show_victory_screen()
-            terminate()   
+            if board.chest.opened:
+                show_victory_screen()
+            else:
+                show_game_over_screen()
+            terminate()
         if board.check_death():
             show_game_over_screen()
             terminate()       
