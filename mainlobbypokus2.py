@@ -46,7 +46,9 @@ def start_level_4():
     subprocess.run(["python", "hledání partnera.py"])
 
 def start_level_5():
-    subprocess.run(["python", "snake.py"]) #add boss fight
+    subprocess.run(["python", "epic_snake_maze.py"]) 
+    
+#add boss fight
 
 # Create buttons
 level1_button = Button(300, 150, 200, 50, "Start Level 1", start_level_1)
