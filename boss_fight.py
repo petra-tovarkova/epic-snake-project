@@ -4,7 +4,7 @@ import pygame
 import time
 from pygame.locals import *
 
-FPS = 20
+FPS = 45
 WINDOWWIDTH = 640
 WINDOWHEIGHT = 480
 CELLSIZE = 20
@@ -12,7 +12,7 @@ assert WINDOWWIDTH % CELLSIZE == 0
 assert WINDOWHEIGHT % CELLSIZE == 0
 NUM_CELLS_X = WINDOWWIDTH // CELLSIZE
 NUM_CELLS_Y = WINDOWHEIGHT // CELLSIZE
-TIME_SLEEP = 0.3
+TIME_SLEEP = 0.25
 
 BGCOLOR = (0, 0, 0)
 PURPLE = (128, 0, 128)
@@ -62,26 +62,10 @@ class Board:
         danger_rect_bottom = pygame.Rect(0, WINDOWHEIGHT - CELLSIZE * 4, WINDOWWIDTH, CELLSIZE * 4)
         pygame.draw.rect(DISPLAYSURF, RED, danger_rect_top, 4)
         pygame.draw.rect(DISPLAYSURF, RED, danger_rect_bottom, 4)
-        
-        
-        # Draw health bar of boss
-        # neni hotovo, domyslet jestě přidat snake lives a chtela jsem to udelat jako srdicka v minecraftu
-        # boss_health_bar = pygame.Rect(10, self.boss.position[1] * CELLSIZE, 20 * self.boss.lives, CELLSIZE)
-        # pygame.draw.rect(DISPLAYSURF, DARKRED, boss_health_bar)
+    
 
 
         # Draw worms
-        # toto mi taky jeste nefunguje
-        """
-        zizalky= []
-        zizalky.append(Worm(X,y,width....))
-
-        for zizala in self.zizaly:
-            for length in range(zizala.width):
-                Screen.ctverec((zizala.pos[0]-lenght*TILESIZE,zizala.pos[1]) dalši argumenty na vykreslení čtverce idk)
-        Zapomněl jsme jak se děla čtverec v pygame tak jsem napsal screen.ctverec, to změň na to jak se děla čtverec
-        """
-        
         for zizala in self.zizaly:
             for part in zizala.position:
                 outer_part_rect = pygame.Rect(part[0], part[1], CELLSIZE, CELLSIZE)
@@ -106,11 +90,7 @@ class Board:
 
 
         # Draw boss
-        # dokoncit vzhled aby mel fialove kosticky ohranicene tmave fialovou,, dve oci
-        # tady je to rozbity
-
-        #porad to nefunguje \(°e°)/ aaaaaaaaaaaaaaaa
-
+        # \(°e°)/ aaaaaaaaaaaaaaaa
         boss_x, boss_y = self.boss.position
         for i in range(self.boss.size[0]):
             for j in range(self.boss.size[1]):
@@ -119,12 +99,12 @@ class Board:
                 pygame.draw.rect(DISPLAYSURF, DARKPURPLE,outer_part_rect_boss)
                 pygame.draw.rect(DISPLAYSURF, PURPLE, inner_part_rect_boss)
 
-        #oči
+        #očka
         pygame.draw.rect(DISPLAYSURF, WHITE, (boss_x * CELLSIZE + CELLSIZE // 4 + CELLSIZE, boss_y * CELLSIZE + CELLSIZE // 4 + self.boss.size[0] * CELLSIZE * 2, CELLSIZE // 2, CELLSIZE // 2))
-        pygame.draw.rect(DISPLAYSURF, BLACK, (boss_x * CELLSIZE + CELLSIZE // 4 + CELLSIZE // 8 + CELLSIZE, boss_y * CELLSIZE + CELLSIZE // 4 + CELLSIZE // 8 + self.boss.size[0] * CELLSIZE * 2, CELLSIZE // 3, CELLSIZE // 3))
+        pygame.draw.rect(DISPLAYSURF, BLACK, (boss_x * CELLSIZE + CELLSIZE // 4 + CELLSIZE // 8 + CELLSIZE, boss_y * CELLSIZE + CELLSIZE // 4 + CELLSIZE // 8 + self.boss.size[0] * CELLSIZE * 2, CELLSIZE // 4, CELLSIZE // 4))
 
         pygame.draw.rect(DISPLAYSURF, WHITE, (boss_x * CELLSIZE + CELLSIZE // 4 + CELLSIZE, boss_y * CELLSIZE + CELLSIZE // 4 + CELLSIZE, CELLSIZE // 2, CELLSIZE // 2))
-        pygame.draw.rect(DISPLAYSURF, BLACK, (boss_x * CELLSIZE + CELLSIZE // 4 + CELLSIZE // 8 + CELLSIZE, boss_y * CELLSIZE + CELLSIZE // 4 + CELLSIZE // 8 + CELLSIZE, CELLSIZE // 3, CELLSIZE // 3))
+        pygame.draw.rect(DISPLAYSURF, BLACK, (boss_x * CELLSIZE + CELLSIZE // 4 + CELLSIZE // 8 + CELLSIZE, boss_y * CELLSIZE + CELLSIZE // 4 + CELLSIZE // 8 + CELLSIZE, CELLSIZE // 4, CELLSIZE // 4))
 
 
         max_lives_boss = 3
@@ -257,7 +237,6 @@ class Worm:
 
 
 class Snake:
-    #nevim jestli mam spravne to reset aaaa
     def __init__(self, x, y, lives):
         self.direction = RIGHT
         self.lives = lives
@@ -288,7 +267,7 @@ class Snake:
         else:
             self.ate = False
 
-# vyuziti na generovanni nahodnych bloku kterych se had nemuze dotknout ?? (DARKRED)
+# vyuziti na generovanni nahodnych bloku kterych se had nemuze dotknout ?? 
 def get_random_position():
     return random.randint(1, NUM_CELLS_X - 2), random.randint(1, NUM_CELLS_Y - 2)
 
