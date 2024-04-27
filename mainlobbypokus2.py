@@ -59,12 +59,12 @@ def start_level_6():
 #add boss fight
 
 # Create buttons
-level1_button = Button(300, 150, 200, 50, "Start Level 1", start_level_1)
-level2_button = Button(300, 225, 200, 50, "Start Level 2", start_level_2)
-level3_button = Button(300, 300, 200, 50, "Start Level 3", start_level_3)
-level4_button = Button(300, 375, 200, 50, "Start Level 4", start_level_4)
-level5_button = Button(300, 450, 200, 50, "Start Level 5", start_level_5)
-level6_button = Button(300, 525, 200, 50, "Start Level 6", start_level_6, DARKRED)
+level1_button = Button(300, 150, 200, 50, "Level 1", start_level_1)
+level2_button = Button(300, 225, 200, 50, "Level 2", start_level_2)
+level3_button = Button(300, 300, 200, 50, "Level 3", start_level_3)
+level4_button = Button(300, 375, 200, 50, "Level 4", start_level_4)
+level5_button = Button(300, 450, 200, 50, "Level 5", start_level_5)
+level6_button = Button(300, 525, 200, 50, "Level 6", start_level_6, DARKRED)
 
 
 #Show a welcome screen at the first start of the game
