@@ -12,7 +12,7 @@ assert WINDOWWIDTH % CELLSIZE == 0
 assert WINDOWHEIGHT % CELLSIZE == 0
 NUM_CELLS_X = WINDOWWIDTH // CELLSIZE
 NUM_CELLS_Y = WINDOWHEIGHT // CELLSIZE
-TIME_SLEEP = 0.25
+TIME_SLEEP = 0.24
 
 BGCOLOR = (0, 0, 0)
 PURPLE = (128, 0, 128)
@@ -140,6 +140,7 @@ class Board:
                         zizala.die = True
                         zizala.lives = 0
                         self.boss.lives -= 1
+
                         if self.boss.lives == 0:
                             return "boss_dead"
                         else:
