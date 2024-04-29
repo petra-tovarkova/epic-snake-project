@@ -1,3 +1,5 @@
+#final boss fight level 
+# \(°e°)/ aaaaaaaaaaaaaaaa
 import sys
 import random
 import pygame
@@ -12,7 +14,7 @@ assert WINDOWWIDTH % CELLSIZE == 0
 assert WINDOWHEIGHT % CELLSIZE == 0
 NUM_CELLS_X = WINDOWWIDTH // CELLSIZE
 NUM_CELLS_Y = WINDOWHEIGHT // CELLSIZE
-TIME_SLEEP = 0.24
+TIME_SLEEP = 0.24 
 
 BGCOLOR = (0, 0, 0)
 PURPLE = (128, 0, 128)
@@ -90,7 +92,6 @@ class Board:
 
 
         # Draw boss
-        # \(°e°)/ aaaaaaaaaaaaaaaa
         boss_x, boss_y = self.boss.position
         for i in range(self.boss.size[0]):
             for j in range(self.boss.size[1]):
@@ -140,7 +141,6 @@ class Board:
                         zizala.die = True
                         zizala.lives = 0
                         self.boss.lives -= 1
-
                         if self.boss.lives == 0:
                             return "boss_dead"
                         else:
@@ -178,6 +178,7 @@ class Board:
             
             
         # Check if boss collided with danger block
+        # jeste pridat zmensování displaye po tom co snae ztratí život
 
     def reset(self):
         self.zizaly = []
@@ -311,15 +312,21 @@ def main():
             zizala.worm_move()
         collision_result = board.check_collision()
         if collision_result == "snake_dead":
+            pygame.mixer.music.load("game_over.mp3")
+            pygame.mixer.music.play()
             show_game_over_screen()
             terminate()
         elif collision_result == "boss_hit":
+            pygame.mixer.music.load("good.mp3")
+            pygame.mixer.music.play()
             board.respawn_zizala(1)
-        elif collision_result == "danger_zone_hit":
-            board.reset()
         elif collision_result == "snake_hit":
+            pygame.mixer.music.load("bad.mp3")
+            pygame.mixer.music.play()
             board.reset()
         elif collision_result == "boss_dead":
+            pygame.mixer.music.load("victory.mp3")
+            pygame.mixer.music.play()
             show_victory_screen()
             terminate()
         time.sleep(TIME_SLEEP)  
@@ -341,7 +348,7 @@ def wait_for_key_pressed():
     was_key_pressed()  # Clear any previous key presses in the event queue
     while True:
         if was_key_pressed():
-            pygame.event.get()  # Clear event queue
+            pygame.event.get()  
             return
         
 
@@ -391,14 +398,14 @@ def show_game_over_screen():
 
 
 def show_victory_screen():
-   #Show a victory screen when the player collects all letters
+   #Show a victory screen when the player kill the boss
     victory_font = pygame.font.Font('freesansbold.ttf', 100)
     victory_surface = victory_font.render('Victory!', True, WHITE)
     victory_rect = victory_surface.get_rect()
     victory_rect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 2 - 100)
 
     sentence_font = pygame.font.Font('freesansbold.ttf', 30)
-    sentence_surface = sentence_font.render('Congratulajshinnnn!', True, WHITE)
+    sentence_surface = sentence_font.render('Congratulejshinnnn!', True, WHITE)
     sentence_rect = sentence_surface.get_rect()
     sentence_rect.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 1.7)
 
