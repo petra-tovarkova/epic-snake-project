@@ -2,3 +2,4 @@ Tento repozitář obsahuje implementaci klasické hry hada v jazyce Python s pou
 Táto verzia hry hada bola vylepšená o rôzne úrovne, nové predmety a ďalšie prvky, ktoré obohacujú herný zážitok.
 Enjoy!
 
+Vytvořeno v rámci kurzu Python pro středoškoláky.
